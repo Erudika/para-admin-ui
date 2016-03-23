@@ -1,0 +1,89 @@
+<div class="row pvl">
+	<div class="col-lg-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-users fa-5x grey"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalUsers}}</div>
+						<div>Total Users</div>
+					</div>
+				</div>
+			</div>
+			<a ui-sref="list({entity:'user'})">
+				<div class="panel-footer">
+					<span class="pull-left">View Details</span>
+					<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-cubes fa-5x grey"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{totalObjects || 0}}</div>
+						<div>Total Objects</div>
+					</div>
+				</div>
+			</div>
+			<a ui-sref="list({entity:'sysprop'})">
+				<div class="panel-footer">
+					<span class="pull-left">View Details</span>
+					<span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-cube fa-5x grey"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">{{customTypes || 0}}</div>
+						<div>Custom Types</div>
+					</div>
+				</div>
+			</div>
+			<a ng-href="#/app/edit/{{appid}}">
+				<div class="panel-footer">
+					<span class="pull-left">Resource permissions:</span>
+					<span class="pull-right">{{totalPermits}}</span>
+					<div class="clearfix"></div>
+				</div>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-3">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<div class="row">
+					<div class="col-xs-3">
+						<i class="fa fa-cloud fa-5x grey"></i>
+					</div>
+					<div class="col-xs-9 text-right">
+						<div class="huge">v{{paraVersion}}</div>
+						<div></div>
+						<div>Para Version</div>
+					</div>
+				</div>
+			</div>
+			<div class="panel-footer">
+				<span class="pull-left">API endpoint:</span>
+				<span class="pull-right"><code class="blue">{{paraEndpoint}}</code></span>
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+</div>

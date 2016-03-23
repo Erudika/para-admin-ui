@@ -1,0 +1,18 @@
+
+{
+  "name": "ng-admin-test",
+  "version": "1.0.0",
+  "description": "Para Web Console",
+  "main": "app/index.html",
+  "scripts": {    
+  },
+  "author": "Alex Bogdanovski",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "angular": "^1.5.2",
+    "jsrsasign": "^5.0.7",
+    "lodash": "^4.6.1",
+    "ng-admin": "^0.9.1"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,22 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+     ____  ___ _ ____ ___ _
+    / __ \/ __` / ___/ __` /
+   / /_/ / /_/ / /  / /_/ /
+  / .___/\__,_/_/   \__,_/ io.com
+ /_/
+
+# TEAM
+
+    Name: Alexander Bogdanovski
+    Site: https://github.com/albogdano
+    Company: Erudika http://erudika.com
+    Twitter: albogdano
+
+
+# TECHNOLOGY
+
+	ng-admin
+	angularjs
+	restangular
