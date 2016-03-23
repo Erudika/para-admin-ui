@@ -11,7 +11,7 @@ It helps you build applications faster by taking care of the backend. It works o
 objects are stored in a NoSQL data store or any old relational database, then automatically indexed
 by a search engine and finally, cached.
 
-This is the admin console for managing a Para backend.
+This is the admin console for managing a **Para** backend.
 
 ![screenshot](images/grab.png)
 
