@@ -17,13 +17,16 @@ This is the admin console for managing a **Para** backend.
 
 ### Quick start
 
-**LIVE DEMO:** [console.paraio.org](http://console.paraio.org)
+**TRY IT:** [console.paraio.org](http://console.paraio.org)
 
 To run it locally, start up a web server like Express or Python:
 ```sh
 $ cd para-admin-ui
 $ python -m SimpleHTTPServer 9000
 ```
+
+The admin interface is client-side only and your secret key is never sent over the the network. Instead,
+a JWT access token is generated locally and sent to the server on each request.
 
 ## ng-admin and Restangular
 
