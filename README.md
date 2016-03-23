@@ -17,13 +17,15 @@ This is the admin console for managing a **Para** backend.
 
 ### Quick start
 
-Run it through a web server like Express or Python:
+**LIVE DEMO:** [console.paraio.org](http://console.paraio.org)
+
+To run it locally, start up a web server like Express or Python:
 ```sh
 $ cd para-admin-ui
 $ python -m SimpleHTTPServer 9000
 ```
 
-## ng-admin and Restangular 
+## ng-admin and Restangular
 
 This project is based on [ng-admin](https://github.com/marmelab/ng-admin) and [Restangular](https://github.com/mgonto/restangular)
 so be sure to check their docs first:
