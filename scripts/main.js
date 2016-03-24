@@ -93,19 +93,28 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 			return value.length > 50 ? value.substr(0, 50) + '...' : value;
 		}
 
+		function getPic(size) {
+			return nga.field('picture', 'template').label('').
+						template('<img src="{{entry.values.picture}}" width="' + size + '" />');
+		}
+
 		function crudify(entity, type, readOnly) {
 			readOnly = readOnly || false;
+			var isUser = type === 'user';
+			var idp = nga.field('identityProvider').label('Logged in with');
+			var email = nga.field('email', 'template').
+						template('<a href="mailto:{{entry.values.email}}">{{entry.values.email}}</a>');
 
 			entity.listView().perPage(limit).fields([
-				nga.field('id').isDetailLink(true),
-				nga.field('name'),
+				isUser ? getPic(20) : nga.field('id').isDetailLink(true),
+				nga.field('name').isDetailLink(true),
 				nga.field('timestamp', 'datetime').label('Created'),
 				nga.field('updated', 'datetime').label('Updated'),
-				nga.field('creatorid', 'reference').
+				isUser ? idp : nga.field('creatorid', 'reference').
 						label('Created by').
 						targetEntity(nga.entity('user')).
 						targetField(nga.field('id')),
-				nga.field('tags', 'reference_many').
+				isUser ? email : nga.field('tags', 'reference_many').
 						targetEntity(nga.entity('tag')).
 						targetField(nga.field('tag')).
 						singleApiCall(function(ids){ return {'id': ids }; }),
@@ -127,20 +136,16 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 							.label('Created by')
 				]);
 
-			if (type === 'user') {
-				var email = nga.field('email', 'template').
-						template('<a href="mailto:{{entry.values.email}}">{{entry.values.email}}</a>');
-				var emailInput =nga.field('email', 'email').validation({required: true, minlength: 3});
-				var provider = nga.field('identityProvider');
-				var pic = nga.field('picture', 'template').label('').
-						template('<img src="{{entry.values.picture}}" width="200" />');
+			if (isUser) {
+				var emailInput = nga.field('email', 'email').validation({required: true, minlength: 3});
 				var picInput = nga.field('picture').attributes({ placeholder: 'http://' }).label('Avatar URL');
-				entity.showView().fields().push(pic);
-				entity.showView().fields().push(provider);
+				entity.showView().fields().push(getPic(250));
+				entity.showView().fields().push(idp);
 				entity.showView().fields().push(email);
 
 				entity.creationView().fields().push(picInput);
 				entity.creationView().fields().push(emailInput);
+				entity.editionView().fields().push(getPic(250));
 			}
 
 			entity.showView().title(_.upperFirst(type) + " #{{entry.values.id}}").fields([
