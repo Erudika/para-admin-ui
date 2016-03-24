@@ -280,12 +280,12 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 				</div>');
 		}
 
-		admin.addEntity(crudify(addresses, 'address'));
-		admin.addEntity(crudify(tags, 'tag'));
+		admin.addEntity(crudify(apps, 'app'));
 		admin.addEntity(crudify(users, 'user'));
+		admin.addEntity(crudify(tags, 'tag'));
+		admin.addEntity(crudify(addresses, 'address'));
 		admin.addEntity(crudify(sysprops, 'sysprop'));
 		admin.addEntity(crudify(linkers, 'linker', true).readOnly());
-		admin.addEntity(crudify(apps, 'app'));
 		//admin.addEntity(crudify(votes, 'vote', true).readOnly());
 
 		for (var ctype in authObject.app.datatypes) {
