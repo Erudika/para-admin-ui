@@ -7,12 +7,6 @@ _.contains = function (a, b) {
 	return _.includes(a, b);
 };
 
-_.upperFirst = function (str) {
-	var string = str || "";
-	var chr = string.charAt(0);
-	return chr ? chr.toUpperCase()  + string.slice(1) : str;
-};
-
 pwc.controller('MainController', ['$rootScope', '$scope',
 	function($rootScope, $scope) {
 		$scope.authObject = authObject || {};
