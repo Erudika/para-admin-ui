@@ -5,3 +5,4 @@ dist
 bower_components
 test/bower_components
 nbproject
+npm-debug.log

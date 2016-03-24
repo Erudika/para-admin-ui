@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "description": "Para Web Console",
   "main": "app/index.html",
-  "scripts": {    
+  "scripts": {
+		"server": "python -m SimpleHTTPServer 9000"
   },
   "author": "Alex Bogdanovski",
   "license": "Apache-2.0",
