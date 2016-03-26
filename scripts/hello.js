@@ -69,7 +69,8 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 					StorageService.save("para-auth", angular.extend($scope.settings, {
 						app: data.data,
 						jwt: token,
-						url: getURL()
+						url: getURL(),
+						theme: StorageService.get("para-auth").theme
 					}));
 					window.location = "./index.html";
 				} else {

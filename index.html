@@ -31,6 +31,19 @@
 			function loadAuth() {
 				return JSON.parse(window.localStorage.getItem('para-auth') || '{}');
 			}
+			function setTheme() {
+				var href, logohref, theme;
+				var theme = loadAuth().theme;
+				if (theme === 'light') {
+					href = "styles/main.css";
+					logohref = "images/logo.svg";
+				} else {
+					href = "styles/dark.css";
+					logohref = "images/logodark.svg";
+				}
+				document.getElementById('theme').href = href;
+				document.getElementById('logo').src = logohref;
+			};
 			try {
 				authObject = loadAuth();
 				if (!authObject || !authObject.jwt) {
@@ -43,14 +56,14 @@
     <!-- build:css styles/main.css -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700">
 		<link rel="stylesheet" href="styles/ng-admin.min.css">
-		<link rel="stylesheet" href="styles/main.css">
+		<link rel="stylesheet" href="styles/main.css" id="theme">
     <!-- endbuild -->
   </head>
   <body ng-app="pwc" ng-controller="MainController" ng-strict-di>
 		<div class="header">
 			<div class="row">
 				<div class="col-sm-2">
-					<img src="images/logo.svg" width="121" height="39" alt="Para logo" class="logo-img"/>
+					<img src="images/logo.svg" width="121" height="39" alt="Para logo" class="logo-img" id="logo"/>
 					<div class="logo-txt">
 						<small>web console</small>
 					</div>
@@ -82,7 +95,7 @@
 		</div>
 
     <!-- build:js scripts/main.js -->
-		<script>if (typeof exports === 'undefined') { exports = window; }</script>
+		<script>if (typeof exports === 'undefined') { exports = window; } setTheme();</script>
 		<script src="scripts/ng-admin.min.js"></script>
 		<script src="scripts/lodash.min.js"></script>
 		<script src="scripts/utils.js"></script>

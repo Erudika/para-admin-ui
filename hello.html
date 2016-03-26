@@ -17,14 +17,43 @@
     <!-- build:css styles/main.css -->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700">
 		<link rel="stylesheet" href="styles/ng-admin.min.css">
-		<link rel="stylesheet" href="styles/main.css">
+		<link rel="stylesheet" href="styles/main.css" id="theme">
+		<script>
+			function saveAuth(obj) {
+				window.localStorage.setItem('para-auth', JSON.stringify(obj));
+			}
+			function loadAuth() {
+				return JSON.parse(window.localStorage.getItem('para-auth') || '{}');
+			}
+			function setTheme(t) {
+				var href, logohref, theme;
+				var authObject = loadAuth();
+				if (t) {
+					theme = t;
+				} else {
+					theme = authObject.theme === 'light' ? 'dark' : 'light';
+				}
+				if (theme === 'light') {
+					href = "styles/main.css";
+					logohref = "images/logo.svg";
+					authObject.theme = 'light';
+				} else {
+					href = "styles/dark.css";
+					logohref = "images/logodark.svg";
+					authObject.theme = 'dark';
+				}
+				saveAuth(authObject);
+				document.getElementById('theme').href = href;
+				document.getElementById('logo').src = logohref;
+			};
+		</script>
     <!-- endbuild -->
   </head>
   <body ng-app="pwc" ng-strict-di>
 		<div class="header" ng-controller="LoginController">
 			<div class="row">
 				<div class="col-md-2">
-					<img src="images/logo.svg" width="121" height="39" alt="Para logo" class="logo-img"/>
+					<img src="images/logo.svg" width="121" height="39" alt="Para logo" class="logo-img" id="logo"/>
 					<div class="logo-txt">
 						<small>web console</small>
 					</div>
@@ -43,7 +72,7 @@
 									<a href="#" ng-click="showSettings = !showSettings"><i class="fa fa-cog cog"></i></a>
 								</div>
 								<div class="col-md-2 text-center">
-									<input type="submit" value="Connect" class="btn btn-block" ng-click="login(getJWT)"/>
+									<input type="submit" value="Connect" class="btn btn-block" ng-click="login()"/>
 								</div>
 							</div>
 						</div>
@@ -63,10 +92,19 @@
 											<input type="text" name="apiPath" class="form-control" ng-model="settings.apiPath" placeholder="API path"/>
 										</div>
 										<div class="col-md-3 text-center">
-											<label class="settings-check">
-												<input type="checkbox" ng-model="settings.remember"/>
-												Remember secret key
-											</label>
+											<div class="row">
+												<div class="col-xs-8">
+													<label class="settings-check">
+														<input type="checkbox" ng-model="settings.remember"/>
+														Remember secret key
+													</label>
+												</div>
+												<div class="col-xs-4">
+													<a href="#" onclick="setTheme()" class="btn btn-default mvl right" title="Dark / Light Theme">
+														<i class="fa fa-star-half-o fa-lg"></i>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -111,7 +149,7 @@
 		</div>
 
     <!-- build:js scripts/main.js -->
-		<script>if (typeof exports === 'undefined') { exports = window; }</script>
+		<script>if (typeof exports === 'undefined') { exports = window; } setTheme(loadAuth().theme);</script>
 		<script src="scripts/angular.min.js"></script>
 		<script src="scripts/lodash.min.js"></script>
 		<script src="scripts/jsrsasign.js"></script>
