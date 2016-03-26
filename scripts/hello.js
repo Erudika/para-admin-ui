@@ -10,6 +10,7 @@ _.contains = function (a, b) {
 pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$http',
 	function ($rootScope, $scope, StorageService, $http) {
 		$scope.showSettings = false;
+		$rootScope.error = "";
 		var error = "Access denied for this secret key. Check the credentials and try again.";
 		var settings = StorageService.get("para-auth") || {};
 		var accessKey = settings.accessKey || "";
