@@ -11,11 +11,12 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 	function ($rootScope, $scope, StorageService, $http) {
 		$scope.showSettings = false;
 		$rootScope.error = "";
+		var defaultEndpoint = "https://paraio.com";
 		var error = "Access denied for this secret key. Check the credentials and try again.";
 		var settings = StorageService.get("para-auth") || {};
 		var accessKey = settings.accessKey || "";
 		var secretKey = settings.secretKey || "";
-		var endpoint = settings.endpoint || "https://paraio.com";
+		var endpoint = settings.endpoint || defaultEndpoint;
 		var apiPath = settings.apiPath || "/v1/";
 		var remember = settings.remember || false;
 		var jwt = settings.jwt || "";
@@ -33,6 +34,9 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 		}
 
 		function getURL() {
+			if (_.isBlank($scope.settings.endpoint)) {
+				$scope.settings.endpoint = defaultEndpoint;
+			}
 			if (_.endsWith($scope.settings.endpoint, "/")) {
 				$scope.settings.endpoint = $scope.settings.endpoint.sustring(0, $scope.settings.endpoint.length - 1);
 			}
@@ -60,19 +64,13 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 				headers: {
 					"Authorization": "Bearer " + token
 				}
-			}).then(function (data) {
-				if (data.data && data.data.id) {
+			}).then(function (resp) {
+				if (resp.data && resp.data.id) {
 					$scope.showSettings = false;
 					$rootScope.error = "";
 					if (!$scope.settings.remember) {
 						delete $scope.settings.secretKey;
 					}
-					StorageService.save("para-auth", angular.extend($scope.settings, {
-						app: data.data,
-						jwt: token,
-						url: getURL(),
-						theme: StorageService.get("para-auth").theme
-					}));
 					window.location = "./index.html";
 				} else {
 					$rootScope.error = error;
@@ -80,6 +78,12 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 			}, function (res) {
 				$rootScope.error = error;
 			});
+			// save settings in localstore
+			StorageService.save("para-auth", angular.extend($scope.settings, {
+				jwt: token,
+				url: getURL(),
+				theme: StorageService.get("para-auth").theme
+			}));
 		};
 
 		if (jwt.length > 1) {
