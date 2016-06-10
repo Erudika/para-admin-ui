@@ -71,6 +71,12 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 					if (!$scope.settings.remember) {
 						delete $scope.settings.secretKey;
 					}
+					StorageService.save("para-auth", angular.extend($scope.settings, {
+						app: resp.data,
+						jwt: token,
+						url: getURL(),
+						theme: StorageService.get("para-auth").theme
+					}));
 					window.location = "./index.html";
 				} else {
 					$rootScope.error = error;
@@ -78,11 +84,8 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 			}, function (res) {
 				$rootScope.error = error;
 			});
-			// save settings in localstore
 			StorageService.save("para-auth", angular.extend($scope.settings, {
-				jwt: token,
-				url: getURL(),
-				theme: StorageService.get("para-auth").theme
+				url: getURL()
 			}));
 		};
 
