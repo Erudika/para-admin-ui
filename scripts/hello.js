@@ -34,7 +34,7 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 		}
 
 		function getURL() {
-			if (_.isBlank($scope.settings.endpoint)) {
+			if (!$scope.settings.endpoint.trim()) {
 				$scope.settings.endpoint = defaultEndpoint;
 			}
 			if (_.endsWith($scope.settings.endpoint, "/")) {
