@@ -83,10 +83,11 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 				}
 			}, function (res) {
 				$rootScope.error = error;
+				StorageService.save("para-auth", angular.extend($scope.settings, {
+					url: getURL(),
+					theme: StorageService.get("para-auth").theme
+				}));
 			});
-			StorageService.save("para-auth", angular.extend($scope.settings, {
-				url: getURL()
-			}));
 		};
 
 		if (jwt.length > 1) {
