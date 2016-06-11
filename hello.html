@@ -76,7 +76,7 @@
 								</div>
 							</div>
 						</div>
-						<h4 ng-show="error"><i class="fa fa-exclamation-circle"></i> &nbsp;{{error}}</h4>
+						<h4 ng-show="error"><i class="fa fa-exclamation-circle grey"></i> &nbsp;{{error}}</h4>
 					</form>
 					<div class="row" ng-show="showSettings">
 						<div class="col-md-12">
@@ -84,7 +84,8 @@
 								<div class="form-group">
 									<div class="row">
 										<div class="col-md-6">
-											<label for="host">Para API endpoint</label>
+											<label for="host">Para API endpoint &nbsp;(<a href="#" ng-click="setEndpoint(true)">local</a>,
+												<a href="#" ng-click="setEndpoint()">paraio.com</a>)</label>
 											<input type="text" name="endpoint" class="form-control" ng-model="settings.endpoint" placeholder="Hostname"/>
 										</div>
 										<div class="col-md-3">
@@ -118,7 +119,7 @@
 		<div class="intro panel panel-defaul text-center">
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-lg-6 col-lg-offset-3 text-center">
+					<div class="col-md-8 col-md-offset-2 text-center">
 
 						<h1>Hello, fellow developer!</h1>
 						<h3>This is the <i>Para Web Console</i> &mdash; a simple web interface that helps you easily manage your backend.<br>

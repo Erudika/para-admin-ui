@@ -12,7 +12,8 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 		$scope.showSettings = false;
 		$rootScope.error = "";
 		var defaultEndpoint = "https://paraio.com";
-		var error = "Access denied for this secret key. Check the credentials and try again.";
+		var localEndpoint = "http://localhost:8080";
+		var error = "Access denied. Check the credentials and try again.";
 		var settings = StorageService.get("para-auth") || {};
 		var accessKey = settings.accessKey || "";
 		var secretKey = settings.secretKey || "";
@@ -26,7 +27,7 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 			var sClaim = JSON.stringify({
 				exp: now + (7 * 24 * 60 * 60),
 				iat: now,
-				nbf: now,
+				nbf: now - 5, // allow for 5 seconds time difference in clocks
 				appid: appid
 			});
 			var sHeader = JSON.stringify({'alg': 'HS256', 'typ': 'JWT'});
@@ -57,8 +58,15 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 			remember: remember
 		};
 
+		$scope.setEndpoint = function (local) {
+			$scope.settings.endpoint = local ? localEndpoint : defaultEndpoint;
+		};
+
 		$scope.login = function (jwtToken) {
 			var token = jwtToken || getJWT($scope.settings.accessKey, $scope.settings.secretKey);
+			if (!$scope.settings.remember) {
+				delete $scope.settings.secretKey;
+			}
 
 			$http.get(getURL() + "_me", {
 				headers: {
@@ -68,14 +76,11 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 				if (resp.data && resp.data.id) {
 					$scope.showSettings = false;
 					$rootScope.error = "";
-					if (!$scope.settings.remember) {
-						delete $scope.settings.secretKey;
-					}
 					StorageService.save("para-auth", angular.extend($scope.settings, {
 						app: resp.data,
 						jwt: token,
 						url: getURL(),
-						theme: StorageService.get("para-auth").theme
+						theme: StorageService.get("para-auth") ? StorageService.get("para-auth").theme : "light"
 					}));
 					window.location = "./index.html";
 				} else {
@@ -85,7 +90,7 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 				$rootScope.error = error;
 				StorageService.save("para-auth", angular.extend($scope.settings, {
 					url: getURL(),
-					theme: StorageService.get("para-auth").theme
+					theme: StorageService.get("para-auth") ? StorageService.get("para-auth").theme : "light"
 				}));
 			});
 		};
