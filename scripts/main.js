@@ -285,7 +285,7 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 				</div>');
 		}
 
-		admin.addEntity(crudify(apps, 'app', true));
+		admin.addEntity(crudify(apps, 'app'));
 		admin.addEntity(crudify(users, 'user'));
 		admin.addEntity(crudify(tags, 'tag'));
 		admin.addEntity(crudify(addresses, 'address'));
