@@ -201,22 +201,22 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 				var permissions = nga.field('resourcePermissions', 'json').label('Resource Permissions');
 				var constraints = nga.field('validationConstraints', 'json').label('Validation Constraints');
 				var datatypes = nga.field('datatypes', 'json').label('Datatypes');
-				entity.editionView().fields()[0].
-						attributes({ placeholder: 'App identifier' }).
-						validation({required: true});
+
 				entity.editionView().fields().push(permissions);
 				entity.editionView().fields().push(constraints);
 				entity.editionView().fields().push(datatypes);
 
-				entity.creationView().fields().push(permissions);
-				entity.creationView().fields().push(constraints);
-				entity.creationView().fields().push(datatypes);
+//				entity.creationView().fields().push(permissions);
+//				entity.creationView().fields().push(constraints);
+//				entity.creationView().fields().push(datatypes);
 			}
 
-			entity.creationView().fields().push(nga.field('votes', 'number'));
-			entity.creationView().fields().push(nga.field('stored', 'boolean').validation({required: true}).defaultValue(true));
-			entity.creationView().fields().push(nga.field('indexed', 'boolean').validation({required: true}).defaultValue(true));
-			entity.creationView().fields().push(nga.field('cached', 'boolean').validation({required: true}).defaultValue(true));
+			if (!readOnly) {
+				entity.creationView().fields().push(nga.field('votes', 'number'));
+				entity.creationView().fields().push(nga.field('stored', 'boolean').validation({required: true}).defaultValue(true));
+				entity.creationView().fields().push(nga.field('indexed', 'boolean').validation({required: true}).defaultValue(true));
+				entity.creationView().fields().push(nga.field('cached', 'boolean').validation({required: true}).defaultValue(true));
+			}
 
 			entity.updateMethod('patch');
 			return entity;
@@ -285,7 +285,8 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 				</div>');
 		}
 
-		admin.addEntity(crudify(apps, 'app'));
+
+		admin.addEntity(crudify(apps, 'app', true).readOnly());
 		admin.addEntity(crudify(users, 'user'));
 		admin.addEntity(crudify(tags, 'tag'));
 		admin.addEntity(crudify(addresses, 'address'));
