@@ -62,6 +62,9 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 		});
 
 		RestangularProvider.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
+			if (what === 'app' && _.endsWith(url, '/app') && data.totalHits === 0) {
+				return [authObject.app];
+			}
 			if (data && _.isObject(data) && data.items) {
 				response.totalCount = data.totalHits || data.items.length;
 				return data.items;
