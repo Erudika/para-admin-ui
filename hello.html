@@ -84,7 +84,7 @@
 								<div class="form-group">
 									<div class="row">
 										<div class="col-md-6">
-											<label for="host">Para API endpoint &nbsp;(<a href="#" ng-click="setEndpoint(true)">local</a>,
+											<label for="host">Para API endpoint &nbsp;(<a href="#" ng-click="setEndpoint(true)">localhost</a>,
 												<a href="#" ng-click="setEndpoint()">paraio.com</a>)</label>
 											<input type="text" name="endpoint" class="form-control" ng-model="settings.endpoint" placeholder="Hostname"/>
 										</div>
@@ -101,8 +101,8 @@
 													</label>
 												</div>
 												<div class="col-xs-4">
-													<a href="#" onclick="setTheme()" class="btn btn-default mvl right" title="Dark / Light Theme">
-														<i class="fa fa-star-half-o fa-lg"></i>
+													<a href="#" onclick="setTheme()" class="btn btn-primary mvl right" title="Dark / Light Theme">
+														<i class="fa fa-moon-o fa-lg"></i> Go dark!
 													</a>
 												</div>
 											</div>
@@ -122,7 +122,7 @@
 					<div class="col-md-8 col-md-offset-2 text-center">
 
 						<h1>Hello, fellow developer!</h1>
-						<h3>This is the <i>Para Web Console</i> &mdash; a simple web interface that helps you easily manage your backend.<br>
+						<h3>This is the <i>Para Web Console</i> &mdash; a simple web interface which helps you easily manage your backend.<br>
 								To get started, simply enter your credentials above and hit 'Connect'.
 						</h3>
 						<h4>Don't have API keys? Get a free account from <a href="https://paraio.com/signin" target="_blank">paraio.com</a>.
@@ -141,10 +141,9 @@
 		<div class="footer">
 			<div class="row">
 				<div class="col-lg-12 text-center">
-					<p>Powered by <a href="https://github.com/marmelab/ng-admin" target="_blank">ng-admin</a> and
-						<a href="https://github.com/mgonto/restangular" target="_blank">Restangular</a>. Hosted on
+					<p>Powered by <a href="https://github.com/marmelab/ng-admin" target="_blank">ng-admin</a>. Hosted on
 						<a href="https://github.com/erudika/para-admin-ui" target="_blank">GitHub</a></p>
-					<p>Made with <i class="fa fa-heart blue"></i> by <a href="http://www.erudika.com" target="_blank">Erudika</a></p>
+					<p>Made with <i class="fa fa-heart red"></i> by <a href="http://www.erudika.com" target="_blank">Erudika</a></p>
 				</div>
 			</div>
 		</div>
@@ -153,7 +152,7 @@
 		<script>if (typeof exports === 'undefined') { exports = window; } setTheme(loadAuth().theme);</script>
 		<script src="scripts/ng-admin.min.js"></script>
 		<script src="scripts/lodash.min.js"></script>
-		<script src="scripts/jsrsasign.js"></script>
+		<script src="scripts/jsrsasign.min.js"></script>
 		<script src="scripts/utils.js"></script>
 		<script src="scripts/hello.js"></script>
     <!-- endbuild -->
