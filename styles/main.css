@@ -92,15 +92,27 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-	color: #fff;
-	background-color: #444;
-	border-color: black;
+	color: #333;
+	background-color: #DDD;
+	border-color: transparent;
 }
 .btn-primary.active, .btn-primary:active,
 .btn-primary:hover, .btn-primary:active:hover,
 .btn-primary.focus, .btn-primary:focus {
-	background-color: #4C4C4C;
-	border-color: black;
+	color: #333;
+	background-color: #D2D2D2;
+	border-color: transparent;
+}
+
+button, input[type="button"], input[type="reset"], input[type="submit"] {
+	color: #333;
+	background-color: #DDD;
+}
+
+button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover {
+	color: black;
+	background-color: #D2D2D2;
+	border-color: transparent;
 }
 
 .settings-check {
