@@ -17,7 +17,7 @@ This is the admin console for managing a **Para** backend.
 
 ### Quick start
 
-**TRY IT:** [console.paraio.org](http://console.paraio.org)
+**TRY IT:** [console.paraio.org](https://console.paraio.org)
 
 To run it locally, start up a web server like Express or Python:
 ```sh
