@@ -11,7 +11,7 @@
 
     Name: Alexander Bogdanovski
     Site: https://github.com/albogdano
-    Company: Erudika http://erudika.com
+    Company: Erudika https://erudika.com
     Twitter: albogdano
 
 

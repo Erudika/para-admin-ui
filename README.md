@@ -39,7 +39,7 @@ so be sure to check their docs first:
 
 ## Para documentation
 
-### [Read the Docs](http://paraio.org/docs)
+### [Read the Docs](https://paraio.org/docs)
 
 ## Contributing
 
