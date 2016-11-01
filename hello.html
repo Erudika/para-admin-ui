@@ -14,10 +14,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Para Web Console</title>
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <!-- build:css styles/main.css -->
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700">
-		<link rel="stylesheet" href="styles/ng-admin.min.css">
-		<link rel="stylesheet" href="styles/main.css" id="theme">
+		<link rel="canonical" href="https://console.paraio.org">
+
+		<script type="text/javascript">
+			var host = "console.paraio.org";
+			if ((host === window.location.host) && (window.location.protocol !== "https:"))
+			window.location.protocol = "https";
+		</script>
+
 		<script>
 			function saveAuth(obj) {
 				window.localStorage.setItem('para-auth', JSON.stringify(obj));
@@ -47,6 +51,10 @@
 				document.getElementById('logo').src = logohref;
 			};
 		</script>
+		<!-- build:css styles/main.css -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,700">
+		<link rel="stylesheet" href="styles/ng-admin.min.css">
+		<link rel="stylesheet" href="styles/main.css" id="theme">
     <!-- endbuild -->
   </head>
   <body ng-app="pwc" ng-strict-di>
