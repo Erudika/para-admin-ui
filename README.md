@@ -13,7 +13,7 @@ by a search engine and finally, cached.
 
 This is the admin console for managing a **Para** backend.
 
-![screenshot](images/grab.png)
+![screenshot](docs/images/grab.png)
 
 ### Quick start
 
