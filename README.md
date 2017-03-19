@@ -19,6 +19,10 @@ This is the admin console for managing a **Para** backend.
 
 ### [console.paraio.org](https://console.paraio.org)
 
+**NOTE:** If you connect to a Para server on `http://localhost` or other non-https domain, you should do so from 
+[http://console.paraio.org](https://console.paraio.org). Some browsers don't allow HTTPS pages to make CORS requests to 
+insecure HTTP endpoints.
+
 To run it locally, start up a web server like Express or Python:
 ```sh
 $ cd docs && python -m SimpleHTTPServer 9000
