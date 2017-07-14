@@ -19,8 +19,8 @@ pwc.controller('MainController', ['$rootScope', '$scope',
 	}
 ]);
 
-pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
-	function (NgAdminConfigurationProvider, RestangularProvider) {
+pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvider',
+	function (NgAdminConfigurationProvider, RestangularProvider, $httpProvider) {
 		if (!authObject || !authObject.jwt) return;
 		var nga = NgAdminConfigurationProvider;
 		var appName = authObject.app.name || "Para Web Console";
@@ -80,7 +80,7 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 			return true;
 		});
 
-		var admin = nga.application(appName + " - " + appid, false).baseApiUrl(authObject.url);
+		var admin = nga.application(appName + " (" + appid + ")", false).baseApiUrl(authObject.url);
 		var apps = nga.entity('app');
 		var addresses = nga.entity('address');
 		var linkers = nga.entity('linker');
@@ -140,15 +140,21 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 				]);
 
 			if (isUser) {
+				var activeCheckbox = nga.field('active', 'boolean').validation({required: true}).defaultValue(false);
 				var emailInput = nga.field('email', 'email').validation({required: true, minlength: 3});
+				var passInput = nga.field('password', 'password').validation({required: false, minlength: 6});
 				var picInput = nga.field('picture').attributes({ placeholder: 'http://' }).label('Avatar URL');
 				entity.showView().fields().push(getPic(250));
 				entity.showView().fields().push(idp);
 				entity.showView().fields().push(email);
+				entity.showView().fields().push(activeCheckbox);
 
-				entity.creationView().fields().push(picInput);
 				entity.creationView().fields().push(emailInput);
+				entity.creationView().fields().push(passInput);
+
 				entity.editionView().fields().push(getPic(250));
+				entity.editionView().fields().push(picInput);
+				entity.editionView().fields().push(activeCheckbox);
 			}
 
 			entity.showView().title(_.upperFirst(type) + " #{{entry.values.id}}").fields([
@@ -301,6 +307,24 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider',
 			var type = authObject.app.datatypes[ctype];
 			admin.addEntity(crudify(nga.entity(type), type));
 		}
+
+		$httpProvider.interceptors.push(function () {
+			return {
+				request: function (config) {
+					// test for /comments?_filters={post_id:XXX}
+					if (/\/user/.test(config.url) && config.method === "POST") {
+						config.url = config.url.replace('v1/user', 'jwt_auth');
+						config.data = {
+							appid: appid,
+							provider: "password",
+							token: config.data.email + ":" + config.data.name + ":" + config.data.password
+						};
+						delete config.params;
+					}
+					return config;
+				}
+			};
+		});
 
 		admin.dashboard(dashboard(nga, users, apps, tags));
 
