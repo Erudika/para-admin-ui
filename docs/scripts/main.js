@@ -357,6 +357,6 @@ pwc.directive('customDash', ['Restangular', function (Restangular) {
 					$scope.totalUsers = data.totalCount;
 				});
 			},
-			templateUrl: '/dash.html'
+			templateUrl: 'dash.html'
 		};
 }]);
