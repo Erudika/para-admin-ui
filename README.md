@@ -27,6 +27,10 @@ To run it locally, start up a web server like Express or Python:
 ```sh
 $ cd docs && python -m SimpleHTTPServer 9000
 ```
+**OR**:
+```sh
+$ npm run server
+```
 
 The admin interface is **client-side only** and your secret key is *never* sent over the the network. Instead,
 a JWT access token is generated locally and sent to the server on each request.

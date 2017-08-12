@@ -1,11 +1,10 @@
-
 {
   "name": "para-admin-ui",
   "version": "1.2.0",
   "description": "Para Web Console",
   "main": "app/index.html",
   "scripts": {
-		"server": "python -m SimpleHTTPServer 9000"
+    "server": "python -m SimpleHTTPServer 9000"
   },
   "author": "Alex Bogdanovski",
   "license": "Apache-2.0",
