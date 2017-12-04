@@ -11,17 +11,22 @@ It helps you build applications faster by taking care of the backend. It works o
 objects are stored in a NoSQL data store or any old relational database, then automatically indexed
 by a search engine and finally, cached.
 
-This is the admin console for managing a **Para** backend.
+This is the basic, open source admin console for managing your own **Para** backend. 
+**There's a much more advanced and feature-rich web UI at [ParaIO.com](https://paraio.com) - the hosted Para service.**
 
 ![screenshot](docs/images/grab.png)
 
 ### Quick start
 
-### [console.paraio.org](https://console.paraio.org)
+You don't have to install anything, just open the web UI and start using it!
+
+### Open the Web Console from here: [console.paraio.org](https://console.paraio.org)
 
 **NOTE:** If you connect to a Para server on `http://localhost` or other non-https domain, you should do so from 
 [http://console.paraio.org](https://console.paraio.org). Some browsers don't allow HTTPS pages to make CORS requests to 
 insecure HTTP endpoints.
+
+### Run it locally
 
 To run it locally, start up a web server like Express or Python:
 ```sh
