@@ -40,13 +40,19 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 					params.desc = params._sortDir === 'DESC';
 				}
 				if (params._filters) {
-					params.q = params._filters.q || '*';
+					params.q = params._filters.q || '';
 					delete params._filters.q;
 					var filterz = [];
-					for (var filter in params._filters) {
-						filterz.push(filter + ":" + params._filters[filter]);
+					if (params._filters.id) {
+						params.batch = params._filters.id;
+					} else {
+						for (var filter in params._filters) {
+							filterz.push(filter + ":" + params._filters[filter]);
+						}
 					}
-					filterz.push(params.q);
+					if (params.q) {
+						filterz.push(params.q);
+					}
 					params.q = _.join(filterz, ' AND ');
 				}
 				delete params._page;
@@ -89,6 +95,16 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 		//var votes = nga.entity('vote');
 		var sysprops = nga.entity('sysprop');
 
+		var tagz = nga.field('tags', 'template').
+				template(function (value, field, entry, entity) {
+					var tags = value.values ? value.values.tags || [] : [];
+					var out = "";
+					for (var i = 0; i < tags.length; i++) {
+						out += '<span class="label label-default">' + tags[i] + '</span>';
+					}
+					return out;
+				});
+
 		function truncate(value) {
 			if (!value) {
 				return '';
@@ -117,10 +133,7 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 						label('Created by').
 						targetEntity(nga.entity('user')).
 						targetField(nga.field('id')),
-				isUser ? email : nga.field('tags', 'reference_many').
-						targetEntity(nga.entity('tag')).
-						targetField(nga.field('tag')).
-						singleApiCall(function(ids){ return {'id': ids }; }),
+				isUser ? email : tagz,
 				nga.field('stored', 'boolean'),
 				nga.field('indexed', 'boolean'),
 				nga.field('cached', 'boolean')
@@ -166,9 +179,8 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 						label('Created by').
 						targetEntity(nga.entity('user')).
 						targetField(nga.field('name')),
-				nga.field('tags', 'reference_many').
-						targetEntity(nga.entity('tag')).
-						targetField(nga.field('tag')),
+				tagz,
+
 				nga.field('stored', 'boolean'),
 				nga.field('indexed', 'boolean'),
 				nga.field('cached', 'boolean'),
@@ -202,7 +214,15 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 					title('Edit ' + _.upperFirst(type) + ' "{{ entry.values.name }}"').
 					actions(['list', 'show', 'delete']).
 					fields([
-						entity.creationView().fields()
+						nga.field('id').attributes({ placeholder: 'Auto-generated' }),
+						nga.field('name').validation({required: true, minlength: 1}),
+						nga.field('parentid'),
+						nga.field('creatorid', 'reference').
+								label('Created by').
+								targetEntity(nga.entity('user')).
+								targetField(nga.field('id')),
+						nga.field('tags')
+
 					]);
 			}
 
@@ -311,7 +331,7 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 		$httpProvider.interceptors.push(function () {
 			return {
 				request: function (config) {
-					// test for /comments?_filters={post_id:XXX}
+					// test for /user
 					if (/\/user/.test(config.url) && config.method === "POST") {
 						config.url = config.url.replace('v1/user', 'jwt_auth');
 						config.data = {
@@ -320,6 +340,13 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 							token: config.data.email + ":" + config.data.name + ":" + config.data.password
 						};
 						delete config.params;
+					}
+
+					if (config.params && config.params.batch) {
+						config.url = authObject.url + "_batch";
+						var ids = angular.copy(config.params.batch);
+						delete config.params;
+						config.params = {ids: ids};
 					}
 					return config;
 				}
@@ -353,7 +380,7 @@ pwc.directive('customDash', ['Restangular', function (Restangular) {
 					$scope.totalObjects = data.totalCount;
 				});
 
-				Restangular.oneUrl('totalUsers', authObject.url + "search/count?type=user").get().then(function (data) {
+				Restangular.oneUrl('totalUsers', authObject.url + "users/search/count").get().then(function (data) {
 					$scope.totalUsers = data.totalCount;
 				});
 			},
