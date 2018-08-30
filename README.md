@@ -38,7 +38,7 @@ $ npm run server
 ```
 There's no need to run `npm install`.
 
-The admin interface is **client-side only** and your secret key is *never* sent over the the network. Instead,
+The admin interface is **client-side only** and your secret key is *never* sent over the network. Instead,
 a JWT access token is generated locally and sent to the server on each request.
 
 ## ng-admin and Restangular
