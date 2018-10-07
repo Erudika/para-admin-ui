@@ -1,4 +1,4 @@
-/* global _, authObject, actions */
+/* global _, authObject, actions, angular */
 'use strict';
 
 var pwc = angular.module('pwc', ['ng-admin', 'restangular', 'Utils']);
@@ -13,9 +13,14 @@ _.upperFirst = function (str) {
 	return chr ? chr.toUpperCase()  + string.slice(1) : str;
 };
 
+var isEditionView = false;
+
 pwc.controller('MainController', ['$rootScope', '$scope',
 	function($rootScope, $scope) {
 		$scope.authObject = authObject || {};
+		$rootScope.$on('$stateChangeStart', function (event, toState) {
+			isEditionView = toState.url.indexOf('/edit/') > 0;
+		});
 	}
 ]);
 
@@ -63,6 +68,10 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 			} else if (operation === 'patch' && what === 'app' && element.id === authObject.app.id) {
 				authObject.app = element;
 				saveAuth(authObject);
+			} else if (operation !== 'get' && element.properties) {
+				var props = angular.copy(element.properties);
+				delete element.properties;
+				angular.extend(element, props);
 			}
 			return {params: params};
 		});
@@ -74,6 +83,20 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 			if (data && _.isObject(data) && data.items) {
 				response.totalCount = data.totalHits || data.items.length;
 				return data.items;
+			}
+			if (isEditionView) {
+				data.properties = angular.copy(data);
+				delete data.properties.id;
+				delete data.properties.type;
+				delete data.properties.name;
+				delete data.properties.appid;
+				delete data.properties.updated;
+				delete data.properties.parentid;
+				delete data.properties.timestamp;
+				delete data.properties.creatorid;
+				delete data.properties.objectURI;
+				delete data.properties.plural;
+				delete data.properties.tags;
 			}
 			return data;
 		});
@@ -105,12 +128,12 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 					return out;
 				});
 
-		function truncate(value) {
-			if (!value) {
-				return '';
-			}
-			return value.length > 50 ? value.substr(0, 50) + '...' : value;
-		}
+//		function truncate(value) {
+//			if (!value) {
+//				return '';
+//			}
+//			return value.length > 50 ? value.substr(0, 50) + '...' : value;
+//		}
 
 		function getPic(size) {
 			return nga.field('picture', 'template').label('').
@@ -191,7 +214,9 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 				entity.creationView().
 					title('New ' + _.upperFirst(type)).
 					fields([
-						nga.field('id').attributes({ placeholder: 'Auto-generated' }),
+						(type === 'tag' ?
+							nga.field('id').label("Tag").attributes({ placeholder: 'Tag' }) :
+							nga.field('id').attributes({ placeholder: 'Auto-generated' })),
 						nga.field('name').validation({required: true, minlength: 1}),
 						nga.field('parentid'),
 						nga.field('creatorid', 'reference').
@@ -221,8 +246,18 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 								label('Created by').
 								targetEntity(nga.entity('user')).
 								targetField(nga.field('id')),
-						nga.field('tags')
-
+						nga.field('tags', 'reference_many').
+								targetEntity(nga.entity('tag')).
+								targetField(nga.field('tag')).
+								attributes({placeholder: 'Select tags...'}).
+								remoteComplete(true, {
+									refreshDelay: 300,
+									searchQuery: function (search) {
+										return {q: search};
+									}
+								}),
+						nga.field('properties', 'json').
+								validation({required: false})
 					]);
 			}
 
@@ -245,6 +280,7 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 				entity.creationView().fields().push(nga.field('stored', 'boolean').validation({required: true}).defaultValue(true));
 				entity.creationView().fields().push(nga.field('indexed', 'boolean').validation({required: true}).defaultValue(true));
 				entity.creationView().fields().push(nga.field('cached', 'boolean').validation({required: true}).defaultValue(true));
+				entity.creationView().fields().push(nga.field('properties', 'json').validation({required: false}).defaultValue(null));
 			}
 
 			entity.updateMethod('patch');
