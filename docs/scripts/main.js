@@ -90,6 +90,7 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 				delete data.properties.type;
 				delete data.properties.name;
 				delete data.properties.appid;
+				delete data.properties.active;
 				delete data.properties.updated;
 				delete data.properties.parentid;
 				delete data.properties.timestamp;
