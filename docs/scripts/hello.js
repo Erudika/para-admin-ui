@@ -11,8 +11,8 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 	function ($rootScope, $scope, StorageService, $http) {
 		$scope.showSettings = false;
 		$rootScope.error = "";
-		var defaultEndpoint = "https://paraio.com";
 		var localEndpoint = "http://localhost:8080";
+		var defaultEndpoint = localEndpoint;
 		var error = "Access denied. Make sure that you are not connecting to an HTTP endpoint from HTTPS, check the credentials and try again.";
 		var settings = StorageService.get("para-auth") || {};
 		var accessKey = settings.accessKey || "";
