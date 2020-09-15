@@ -80,9 +80,12 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 			if (what === 'app' && _.endsWith(url, '/app') && data.totalHits === 0) {
 				return [authObject.app];
 			}
+			console.log(response, what);
 			if (data && _.isObject(data) && data.items) {
 				response.totalCount = data.totalHits || data.items.length;
 				return data.items;
+			} else if (data && _.isArray(data) && response.config.method === "POST" && response.config.url.indexOf("_batch") > 0) {
+				return data.length ? data[0] : data;
 			}
 			if (isEditionView) {
 				data.properties = angular.copy(data);
@@ -369,13 +372,17 @@ pwc.config(['NgAdminConfigurationProvider', 'RestangularProvider', '$httpProvide
 			return {
 				request: function (config) {
 					// test for /user
-					if (/\/user/.test(config.url) && config.method === "POST") {
+					if (/\/user/.test(config.url) && config.method === "POST" &&
+							config.data.password && config.data.password.length > 1) {
 						config.url = config.url.replace('v1/user', 'jwt_auth');
 						config.data = {
 							appid: appid,
 							provider: "password",
 							token: config.data.email + ":" + config.data.name + ":" + config.data.password
 						};
+					} else if (config.method === "POST") {
+						config.url = authObject.url + "_batch";
+						config.data = [config.data];
 						delete config.params;
 					}
 
