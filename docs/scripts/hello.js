@@ -12,12 +12,12 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 		$scope.showSettings = false;
 		$rootScope.error = "";
 		var localEndpoint = "http://localhost:8080";
-		var defaultEndpoint = localEndpoint;
+		var defaultEndpoint = "https://paraio.com";
 		var error = "Access denied. Make sure that you are not connecting to an HTTP endpoint from HTTPS, check the credentials and try again.";
 		var settings = StorageService.get("para-auth") || {};
 		var accessKey = settings.accessKey || "";
 		var secretKey = settings.secretKey || "";
-		var endpoint = settings.endpoint || defaultEndpoint;
+		var endpoint = settings.endpoint || localEndpoint;
 		var apiPath = settings.apiPath || "/v1/";
 		var remember = settings.remember || false;
 		var jwt = settings.jwt || "";
@@ -36,7 +36,7 @@ pwc.controller('LoginController', ['$rootScope', '$scope', 'StorageService', '$h
 
 		function getURL() {
 			if (!$scope.settings.endpoint.trim()) {
-				$scope.settings.endpoint = defaultEndpoint;
+				$scope.settings.endpoint = localEndpoint;
 			}
 			if (_.endsWith($scope.settings.endpoint, "/")) {
 				$scope.settings.endpoint = $scope.settings.endpoint.sustring(0, $scope.settings.endpoint.length - 1);
